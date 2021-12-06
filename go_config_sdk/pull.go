@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/lovego/strmap"
 )
 
-
 type (
+	Conf strmap.StrMap
+
 	ConfigData struct {
 		Code    string `json:"code"`
 		Message string `json:"message"`
@@ -18,8 +21,8 @@ type (
 	}
 
 	Config struct {
-		Hash string                 `json:"hash"`
-		Conf map[string]interface{} `json:"conf" c:""`
+		Hash string `json:"hash"`
+		Conf Conf   `json:"conf" c:""`
 	}
 
 	Arg struct {

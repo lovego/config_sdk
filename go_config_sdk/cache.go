@@ -64,5 +64,7 @@ func GetConfig(addr, secret string, arg Arg) (*Config, error) {
 		go req(false)
 	}
 
+	cache.
+
 	return &cache, nil
 }
