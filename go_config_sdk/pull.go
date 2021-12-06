@@ -2,6 +2,7 @@ package go_config_sdk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -10,7 +11,9 @@ import (
 )
 
 type (
-	Conf strmap.StrMap
+	Conf struct {
+		strmap.StrMap
+	}
 
 	ConfigData struct {
 		Code    string `json:"code"`
@@ -21,8 +24,8 @@ type (
 	}
 
 	Config struct {
-		Hash string `json:"hash"`
-		Conf Conf   `json:"conf" c:""`
+		Hash string                 `json:"hash"`
+		Conf map[string]interface{} `json:"conf" c:""`
 	}
 
 	Arg struct {
@@ -64,9 +67,14 @@ func Pull(api, secret string, arg Arg) (*ConfigData, error) {
 		return nil, err
 	}
 
+	if data.Code != "ok" {
+		return nil, errors.New(data.Message)
+	}
+
 	return &data, nil
 }
 
 func (a Arg) Url(host, secret string) string {
-	return fmt.Sprintf(`%s?project=%s&env=%s&version=%s&endPointType=%s&secret=%s&hash=%s`, host, a.Project, a.Env, a.Version, a.EndPointType, secret, a.Hash)
+	return fmt.Sprintf(`%s?project=%s&env=%s&version=%s&endPointType=%s&secret=%s&hash=%s`,
+		host, a.Project, a.Env, a.Version, a.EndPointType, secret, a.Hash)
 }

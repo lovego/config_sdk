@@ -1,6 +1,11 @@
 package go_config_sdk
 
-import "time"
+import (
+	"errors"
+	"time"
+
+	"github.com/lovego/strmap"
+)
 
 var cache Config
 
@@ -63,8 +68,12 @@ func GetConfig(addr, secret string, arg Arg) (*Config, error) {
 		req(true)
 		go req(false)
 	}
+	m := strmap.StrMap(cache.Conf)
 
-	cache.
+	c := m.Get("configCenter").GetString("secret")
+	if c != secret {
+		return nil, errors.New("密码错误")
+	}
 
 	return &cache, nil
 }
