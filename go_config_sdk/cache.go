@@ -39,7 +39,7 @@ func (a *Timer) WaitTime() {
 	time.Sleep(a.T)
 }
 
-func GetConfig(addr, secret string, arg Arg) (*Config, error) {
+func GetConfig(addr, secret string, arg ConfigTag) (*Config, error) {
 
 	if cache.Hash == arg.Hash && cache.Hash != "" {
 		return &cache, nil
@@ -59,7 +59,7 @@ func GetConfig(addr, secret string, arg Arg) (*Config, error) {
 				if data.Data == nil {
 					continue
 				}
-				cache = data.Data.Config
+				cache = *data.Data
 				if isBreack {
 					break
 				}

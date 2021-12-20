@@ -8,9 +8,10 @@ import (
 func TestGetConfig(t *testing.T) {
 
 	req := func() {
-		addr := "http://127.0.0.1:3000/config/pull"
+		//addr := "https://cc-qa.threesoft.cn/config/pull?project=erp&env=dev&version=1.0&endPointType=server&secret=123&hash="
+		addr := "https://cc-qa.threesoft.cn/config/pull"
 
-		data, err := GetConfig(addr, "123", Arg{
+		data, err := GetConfig(addr, "123", ConfigTag{
 			Project:      "erp",
 			Env:          "dev",
 			EndPointType: "server",

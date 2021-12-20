@@ -18,9 +18,7 @@ type (
 	ConfigData struct {
 		Code    string `json:"code"`
 		Message string `json:"message"`
-		Data    *struct {
-			Config Config `json:"config" c:""`
-		} `json:"data"`
+		Data    *Config `json:"data"`
 	}
 
 	Config struct {
@@ -28,7 +26,7 @@ type (
 		Conf map[string]interface{} `json:"conf" c:""`
 	}
 
-	Arg struct {
+	ConfigTag struct {
 		Project      string `json:"project" c:"项目"`
 		Env          string `json:"env" c:"环境"`
 		EndPointType string `json:"endPointType" c:"终端类型"`
@@ -37,7 +35,7 @@ type (
 	}
 )
 
-func Pull(api, secret string, arg Arg) (*ConfigData, error) {
+func Pull(api, secret string, arg ConfigTag) (*ConfigData, error) {
 
 	addr := arg.Url(api, secret)
 
@@ -74,7 +72,7 @@ func Pull(api, secret string, arg Arg) (*ConfigData, error) {
 	return &data, nil
 }
 
-func (a Arg) Url(host, secret string) string {
+func (a ConfigTag) Url(host, secret string) string {
 	return fmt.Sprintf(`%s?project=%s&env=%s&version=%s&endPointType=%s&secret=%s&hash=%s`,
 		host, a.Project, a.Env, a.Version, a.EndPointType, secret, a.Hash)
 }

@@ -8,7 +8,7 @@ import (
 func TestPull(t *testing.T) {
 	api := "http://127.0.0.1:3000/config/pull"
 
-	data, err := Pull(api, "123", Arg{
+	data, err := Pull(api, "123", ConfigTag{
 		Project:      "erp",
 		Env:          "dev",
 		EndPointType: "server",
