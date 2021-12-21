@@ -3,9 +3,9 @@ package go_config_sdk
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 
 	"github.com/lovego/strmap"
 )
@@ -16,8 +16,8 @@ type (
 	}
 
 	ConfigData struct {
-		Code    string `json:"code"`
-		Message string `json:"message"`
+		Code    string  `json:"code"`
+		Message string  `json:"message"`
 		Data    *Config `json:"data"`
 	}
 
@@ -73,6 +73,21 @@ func Pull(api, secret string, arg ConfigTag) (*ConfigData, error) {
 }
 
 func (a ConfigTag) Url(host, secret string) string {
-	return fmt.Sprintf(`%s?project=%s&env=%s&version=%s&endPointType=%s&secret=%s&hash=%s`,
-		host, a.Project, a.Env, a.Version, a.EndPointType, secret, a.Hash)
+
+	u, err := url.Parse(host)
+	if err != nil {
+		panic(err)
+	}
+	value := u.Query()
+
+	value.Set("project", a.Project)
+	value.Set("env", a.Env)
+	value.Set("version", a.Version)
+	value.Set("endPointType", a.EndPointType)
+	value.Set("secret", secret)
+	value.Set("hash", a.Hash)
+
+	u.RawQuery = value.Encode()
+
+	return u.String()
 }
