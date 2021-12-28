@@ -13,7 +13,7 @@ func TestPull(t *testing.T) {
 		Env:          "dev",
 		EndPointType: "server",
 		Version:      "1.0",
-		Hash:         "ae317ce311be12a4ae315a240ec0d304",
+		Hash:         "667cecb004cc418652e7b8297ee2c4b8",
 	})
 	if err != nil {
 		panic(err)

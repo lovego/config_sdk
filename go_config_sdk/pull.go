@@ -80,12 +80,24 @@ func (a ConfigTag) Url(host, secret string) string {
 	}
 	value := u.Query()
 
-	value.Set("project", a.Project)
-	value.Set("env", a.Env)
-	value.Set("version", a.Version)
-	value.Set("endPointType", a.EndPointType)
-	value.Set("secret", secret)
-	value.Set("hash", a.Hash)
+	if a.Project != "" {
+		value.Set("project", a.Project)
+	}
+	if a.Env != "" {
+		value.Set("env", a.Env)
+	}
+	if a.Version != "" {
+		value.Set("version", a.Version)
+	}
+	if a.EndPointType != "" {
+		value.Set("endPointType", a.EndPointType)
+	}
+	if secret != "" {
+		value.Set("secret", secret)
+	}
+	if a.Hash != "" {
+		value.Set("hash", a.Hash)
+	}
 
 	u.RawQuery = value.Encode()
 
