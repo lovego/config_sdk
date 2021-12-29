@@ -7,13 +7,14 @@ import (
 
 func TestPull(t *testing.T) {
 	api := "https://cc-qa.threesoft.cn/config/pull?endPointType=server&env=dev&hash=&project=erp&secret=123&version=1.0"
+	api = "https://cc-qa.threesoft.cn/config/pull?endPointType=server&env=qa2&hash=&project=erp&secret=123&version=1.0"
 
 	data, err := Pull(api, "123", ConfigTag{
 		Project:      "erp",
-		Env:          "dev",
+		Env:          "qa2",
 		EndPointType: "server",
 		Version:      "1.0",
-		Hash:         "667cecb004cc418652e7b8297ee2c4b8",
+		Hash:         "",
 	})
 	if err != nil {
 		panic(err)

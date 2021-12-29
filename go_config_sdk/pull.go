@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/lovego/strmap"
 )
@@ -40,7 +41,9 @@ func Pull(api, secret string, arg ConfigTag) (*ConfigData, error) {
 	addr := arg.Url(api, secret)
 
 	method := "GET"
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: time.Millisecond * 5, // Set 10ms timeout.
+	}
 	req, err := http.NewRequest(method, addr, nil)
 
 	if err != nil {
