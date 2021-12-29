@@ -42,7 +42,7 @@ func Pull(api, secret string, arg ConfigTag) (*ConfigData, error) {
 
 	method := "GET"
 	client := &http.Client{
-		Timeout: time.Millisecond * 5, // Set 10ms timeout.
+		Timeout: time.Second * 10, // Set 10ms timeout.
 	}
 	req, err := http.NewRequest(method, addr, nil)
 
