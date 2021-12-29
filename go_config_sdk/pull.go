@@ -55,6 +55,11 @@ func Pull(api, secret string, arg ConfigTag) (*ConfigData, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	if res.StatusCode != 200 {
+		return nil,errors.New("网络错误")
+	}
+
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
