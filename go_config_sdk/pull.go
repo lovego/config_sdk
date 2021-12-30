@@ -12,6 +12,7 @@ import (
 )
 
 type (
+
 	Conf struct {
 		strmap.StrMap
 	}
