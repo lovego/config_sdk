@@ -48,11 +48,14 @@ func GetConfig(addr, secret string, arg ConfigTag) (*Config, error) {
 
 	if !pull {
 		pull = true
-		req := func(isBreack bool) {
+		req := func(isBreak bool) {
 			for true {
 
 				data, err := Pull(addr, secret, arg)
 				if err != nil {
+					if isBreak {
+						panic(err)
+					}
 					t.WaitTime()
 					continue
 				}
@@ -62,7 +65,7 @@ func GetConfig(addr, secret string, arg ConfigTag) (*Config, error) {
 					continue
 				}
 				cache = *data.Data
-				if isBreack {
+				if isBreak {
 					break
 				}
 				arg.Hash = data.Data.Hash
