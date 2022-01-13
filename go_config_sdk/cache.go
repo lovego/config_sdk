@@ -95,7 +95,6 @@ func getSecret(conf strmap.StrMap) (s string, err error) {
 	}
 
 	// 捕获panic
-
 	// recover能捕获当前的panic
 	defer func() {
 		if message := recover(); message != nil {
