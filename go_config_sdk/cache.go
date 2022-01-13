@@ -2,6 +2,7 @@ package go_config_sdk
 
 import (
 	"errors"
+	"net/url"
 	"time"
 
 	"github.com/lovego/strmap"
@@ -65,6 +66,8 @@ func GetConfig(addr, secret string, arg ConfigTag) (*Config, error) {
 					break
 				}
 				arg.Hash = data.Data.Hash
+
+				secret, _ = getSecret(strmap.StrMap(cache.Conf))
 			}
 		}
 		req(true)
@@ -72,10 +75,35 @@ func GetConfig(addr, secret string, arg ConfigTag) (*Config, error) {
 	}
 	m := strmap.StrMap(cache.Conf)
 
-	c := m.Get("configCenter").GetString("secret")
+	c, err := getSecret(m)
+	if err != nil {
+		return nil, err
+	}
+
 	if c != secret {
 		return nil, errors.New("密码错误")
 	}
 
 	return &cache, nil
+}
+
+
+// 添加密码在线修改校验
+func getSecret(conf strmap.StrMap) (string, error) {
+
+	if conf == nil {
+		return "", errors.New("配置不能为空")
+	}
+
+	address := conf.Get("configCenter").GetString("pull")
+	if address == "" {
+		return "", nil
+	}
+
+	u, err := url.Parse(address)
+	if err != nil {
+		return "", errors.New("地址解析错误")
+	}
+
+	return u.Query().Get("secret"), nil
 }
