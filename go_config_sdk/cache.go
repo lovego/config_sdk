@@ -67,7 +67,7 @@ func GetConfig(addr, secret string, arg ConfigTag) (*Config, error) {
 				}
 				arg.Hash = data.Data.Hash
 
-				secret, _ = getSecret(strmap.StrMap(cache.Conf))
+				secret, _ = getSecret(cache.Conf)
 			}
 		}
 		req(true)
@@ -87,13 +87,26 @@ func GetConfig(addr, secret string, arg ConfigTag) (*Config, error) {
 	return &cache, nil
 }
 
-
 // 添加密码在线修改校验
-func getSecret(conf strmap.StrMap) (string, error) {
+func getSecret(conf strmap.StrMap) (s string, err error) {
 
 	if conf == nil {
 		return "", errors.New("配置不能为空")
 	}
+
+	// 捕获panic
+
+	// recover能捕获当前的panic
+	defer func() {
+		if message := recover(); message != nil {
+			msg, ok := message.(string)
+			if !ok {
+				err = errors.New("未知错误")
+				return
+			}
+			err = errors.New(msg)
+		}
+	}()
 
 	address := conf.Get("configCenter").GetString("pull")
 	if address == "" {

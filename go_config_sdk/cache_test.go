@@ -3,6 +3,8 @@ package go_config_sdk
 import (
 	"fmt"
 	"testing"
+
+	"github.com/lovego/strmap"
 )
 
 func TestGetConfig(t *testing.T) {
@@ -27,5 +29,37 @@ func TestGetConfig(t *testing.T) {
 
 	for i := 0; i < 3; i++ {
 		req()
+	}
+}
+
+func Test_getSecret(t *testing.T) {
+	type args struct {
+		conf strmap.StrMap
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantS   string
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "lch",
+			args: args{conf: map[string]interface{}{
+				"lch": "lch",
+			}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotS, err := getSecret(tt.args.conf)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getSecret() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if gotS != tt.wantS {
+				t.Errorf("getSecret() gotS = %v, want %v", gotS, tt.wantS)
+			}
+		})
 	}
 }
